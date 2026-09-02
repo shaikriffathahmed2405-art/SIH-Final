@@ -5,6 +5,7 @@
   "description": "Green Roof AI - Decoupled Frontend & Backend Architecture",
   "type": "module",
   "scripts": {
+    "build": "echo 'Static frontend ready'",
     "start": "node start-dev.js",
     "dev": "node start-dev.js",
     "start:backend": "node backend/server.js",
