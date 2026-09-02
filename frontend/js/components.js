@@ -72,9 +72,9 @@ async function checkBackendHealth() {
 
   const updateBadge = (isOnline, details = null) => {
     if (isOnline) {
-      badge.textContent = "API CONNECTED (8787)";
+      badge.textContent = "API CONNECTED";
       badge.className = "badge gold";
-      badge.title = `Backend REST API Server connected: ${typeof API_BASE_URL !== "undefined" ? API_BASE_URL : "http://localhost:8787"} (Version ${details?.version || "2.2.0"})`;
+      badge.title = `Backend REST API Server connected: ${typeof API_BASE_URL !== "undefined" ? API_BASE_URL : "Render API"} (Version ${details?.version || "2.2.0"})`;
     } else {
       badge.textContent = "STANDALONE ENGINE";
       badge.className = "badge sky";

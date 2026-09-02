@@ -1,4 +1,4 @@
-// Runtime API configuration.
+const RENDER_BACKEND_URL = "https://sih-final-1-3ksw.onrender.com";
 
 const API_BASE_URL = (() => {
   // Use a supplied API URL first.
@@ -13,7 +13,7 @@ const API_BASE_URL = (() => {
     } catch (e) {}
 
     // During local development the frontend and backend normally run on different ports.
-    if (window.location && window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+    if (window.location && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")) {
       const currentPort = window.location.port;
       if (currentPort !== "8787") {
         return `http://${window.location.hostname}:8787`;
@@ -21,13 +21,11 @@ const API_BASE_URL = (() => {
       return window.location.origin;
     }
 
-    // On deployment, prefer the configured origin or the current host.
-    if (window.location && window.location.origin) {
-      return window.location.origin;
-    }
+    // On cloud deployment (e.g. Vercel / Netlify), route requests to the live Render Backend.
+    return RENDER_BACKEND_URL;
   }
 
-  return "http://localhost:8787";
+  return RENDER_BACKEND_URL;
 })();
 
 /** Small wrapper used by the page scripts for JSON API calls. */
