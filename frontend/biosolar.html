@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biosolar Synergy & Energy Savings — Green Roof AI</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-badge">SIH</div>
+        <div>
+          <div class="brand-title">GREEN ROOF AI</div>
+          <div class="brand-sub">Sustainable Urban Decision System</div>
+        </div>
+      </div>
+      <nav class="tabnav" id="tabnav"></nav>
+      <div class="top-actions">
+        <button class="secondary" id="newAssessmentBtn" style="padding:8px 12px;font-size:12px">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>New
+        </button>
+        <div class="badge gold" id="backendBadge">API CONNECTED</div>
+        <button class="icon-btn" id="reportBtn" title="Download Complete DPR Project Report">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+        </button>
+        <button class="icon-btn" id="themeToggle" title="Toggle Light / Dark">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" id="themeIcon"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <div class="card panel">
+        <div class="badge">CLEAN ENERGY &amp; BILL SAVINGS</div>
+        <h2 style="font-size:26px;margin:8px 0 4px">☀️ Biosolar (Solar PV + Green Roof) Synergy Calculator</h2>
+        <p style="color:var(--muted);font-size:13.5px;margin:0 0 18px;max-width:780px">
+          Calculate your exact electricity bill savings (₹) and clean power gains (kWh). Co-locating rooftop solar panels with green plants lowers panel temperatures by 12°C–18°C, preventing power loss and providing natural building insulation!
+        </p>
+
+        <div class="roi-grid">
+          <!-- Inputs -->
+          <div class="roi-card">
+            <h3 style="margin:0 0 14px;font-size:14px;font-family:var(--font-mono);color:var(--canopy-deep)">⚙️ Enter Your System Details</h3>
+            
+            <div style="margin-bottom:12px">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <label style="font-size:12px;font-weight:700;color:var(--ink)">Rooftop Solar PV Capacity (kWp)</label>
+                <span id="roiSolarKwLabel" style="font-size:12px;font-weight:800;color:var(--canopy-deep)">3.0 kWp</span>
+              </div>
+              <input id="roiSolarKw" type="range" step="0.5" value="3.0" min="0.5" max="30" style="width:100%;margin-top:6px;accent-color:var(--canopy-deep)">
+            </div>
+
+            <div style="margin-bottom:12px">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <label style="font-size:12px;font-weight:700;color:var(--ink)">Green Roof Plant Coverage (%)</label>
+                <span id="roiGreenCoverageLabel" style="font-size:12px;font-weight:800;color:var(--canopy-deep)">75%</span>
+              </div>
+              <input id="roiGreenCoverage" type="range" value="75" min="10" max="100" style="width:100%;margin-top:6px;accent-color:var(--canopy-deep)">
+            </div>
+
+            <div style="margin-bottom:12px">
+              <label style="font-size:12px;font-weight:700;color:var(--ink)">Electricity Tariff Rate (₹ per kWh / unit)</label>
+              <input id="roiTariffRate" type="number" step="0.5" value="8.0" min="3.0" max="25" style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--line);margin-top:4px;font-weight:700">
+              <small style="color:var(--muted);font-size:11px;display:block;margin-top:3px">Standard Indian residential rate is ₹7.50 – ₹9.50 / unit.</small>
+            </div>
+
+            <div style="margin-bottom:14px">
+              <label style="font-size:12px;font-weight:700;color:var(--ink)">Top-Floor Air Conditioner Units (1.5 Ton)</label>
+              <input id="roiAcUnits" type="number" value="2" min="0" max="10" style="width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--line);margin-top:4px;font-weight:700">
+            </div>
+
+            <button class="primary" id="calcRoiBtn" style="width:100%;justify-content:center;padding:12px">⚡ Recalculate Savings &amp; Energy Boost</button>
+
+            <div style="margin-top:16px;padding:12px 14px;border-radius:10px;background:var(--canopy-soft);font-size:12px;line-height:1.5;color:var(--canopy-deep)">
+              💡 <b>How it works:</b> In hot weather, solar panels overheat (reaching 65°C) and lose power. The living plants evaporate water to keep panels at <b>48°C</b>, boosting power generation by <b>+10.5%</b> while reducing indoor AC load!
+            </div>
+          </div>
+
+          <!-- Results -->
+          <div class="roi-card">
+            <h3 style="margin:0 0 14px;font-size:14px;font-family:var(--font-mono);color:var(--canopy-deep)">💰 Your Annual Money &amp; Energy Savings</h3>
+            
+            <div class="roi-metric-row">
+              <span>Solar Panel Temperature Reduction:</span>
+              <span class="roi-val" id="roiSolarTempDrop" style="color:var(--canopy-deep);font-weight:800">-16.5°C Cooling</span>
+            </div>
+
+            <div class="roi-metric-row">
+              <span>Solar PV Output Efficiency Gain:</span>
+              <span class="roi-val" id="roiSolarBoost" style="color:var(--canopy);font-weight:800">+10.5% Boost</span>
+            </div>
+
+            <div class="roi-metric-row">
+              <span>Annual Solar Power Bill Savings:</span>
+              <span class="roi-val" id="roiSolarSavings" style="color:var(--canopy-deep);font-weight:800">₹3,656 / year</span>
+            </div>
+
+            <div class="roi-metric-row">
+              <span>Top-Floor AC Cooling Electricity Savings:</span>
+              <span class="roi-val" id="roiAcSavings" style="color:var(--canopy-deep);font-weight:800">₹4,224 / year</span>
+            </div>
+
+            <!-- Annual total -->
+            <div style="background:var(--canopy-soft);border:1.5px solid var(--canopy);padding:14px 16px;border-radius:12px;margin:12px 0;display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <b style="font-size:14px;color:var(--canopy-deep);display:block">Total Combined Annual Savings:</b>
+                <small style="color:var(--muted);font-size:11.5px" id="roiEnergyGainSubtitle">+985 kWh extra clean energy / yr</small>
+              </div>
+              <b class="roi-val" style="font-size:22px;color:var(--canopy-deep)" id="roiAnnualTotal">₹7,880 / yr</b>
+            </div>
+
+            <div class="roi-metric-row">
+              <span>Estimated Modular Green Roof Cost:</span>
+              <span class="roi-val" id="roiSetupCost">₹24,700</span>
+            </div>
+
+            <div class="roi-metric-row">
+              <b style="font-size:13.5px">Payback Period (from Bill Savings):</b>
+              <b class="roi-val" style="font-size:18px;color:var(--clay)" id="roiPaybackYears">3.1 Years</b>
+            </div>
+
+            <div class="roi-metric-row">
+              <span>10-Year Cumulative Net Savings:</span>
+              <span class="roi-val" id="roi10YrNet" style="color:var(--canopy);font-weight:800">₹54,100</span>
+            </div>
+
+            <div class="roi-metric-row">
+              <span>Annual Clean Carbon Offset:</span>
+              <span class="roi-val" id="roiCarbonOffset" style="color:var(--clay);font-weight:800">808 kg CO₂ / yr</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Before/after comparison -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px">
+          <div style="padding:16px;border-radius:12px;background:var(--surface);border:1px solid var(--line)">
+            <div style="font-size:11px;font-weight:800;color:var(--clay);font-family:var(--font-mono)">CONVENTIONAL BARE ROOF</div>
+            <h4 style="margin:6px 0;font-size:14px">Hot Concrete Surface</h4>
+            <p style="font-size:12px;color:var(--muted);line-height:1.45;margin:0">
+              Roof surface heats up to <b>65°C</b> under Indian summer heat. Solar panels lose power due to overheating, and top-floor rooms require maximum AC cooling.
+            </p>
+          </div>
+          <div style="padding:16px;border-radius:12px;background:var(--canopy-soft);border:1px solid var(--canopy)">
+            <div style="font-size:11px;font-weight:800;color:var(--canopy-deep);font-family:var(--font-mono)">BIOSOLAR CO-LOCATION</div>
+            <h4 style="margin:6px 0;font-size:14px;color:var(--canopy-deep)">Symbiotic Vegetated Solar System</h4>
+            <p style="font-size:12px;color:var(--ink);line-height:1.45;margin:0">
+              Living succulent vegetation transpires moisture, stabilizing roof surface at <b>48°C</b>. Panels run at peak efficiency and save thousands on electricity bills!
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Report header -->
+    <div class="dpr-header">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <h1 style="font-family:var(--font-display);font-size:26px;margin:0">SMART CITY GREEN ROOF FEASIBILITY REPORT (DPR)</h1>
+          <small style="font-family:var(--font-mono)">Prepared under National Mission on Sustainable Habitat</small>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:var(--font-mono);font-size:12px">DATE: <span id="dprDate"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/chat.js"></script>
+  <script src="js/whatsapp.js"></script>
+  <script src="js/biosolar.js"></script>
+</body>
+</html>

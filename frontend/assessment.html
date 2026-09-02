@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assessment Studio — Green Roof AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="announce">
+    <span><span class="tag">NATIONAL URBAN MISSION</span> Green Roof AI — Decision Support, Civil Safety &amp; Biosolar Intelligence Engine</span>
+    <span class="right">IS 875 COMPLIANT • MUNICIPAL TAX REBATE READY</span>
+  </div>
+
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">G</div>
+        <div>
+          <div class="brand-name">Green Roof AI</div>
+          <small>Smart Rooftop Greening, Structural Safety &amp; Biosolar Platform</small>
+        </div>
+      </div>
+      <nav class="tabnav" id="tabnav"></nav>
+      <div class="top-actions">
+        <button class="secondary" id="newAssessmentBtn" style="padding:8px 12px;font-size:12px">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>New
+        </button>
+        <div class="badge gold" id="backendBadge">BACKEND ONLINE</div>
+        <button class="icon-btn" id="reportBtn" title="Download Complete DPR Project Report">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+        </button>
+        <button class="icon-btn" id="themeToggle" title="Toggle Light / Dark">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" id="themeIcon"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Assessment view -->
+    <main>
+      <div class="stepper" id="stepper">
+        <div class="step" data-step="upload"><div class="step-dot">1</div><div class="step-label">Upload</div></div>
+        <div class="step-line"></div>
+        <div class="step" data-step="locate"><div class="step-dot">2</div><div class="step-label">Locate</div></div>
+        <div class="step-line"></div>
+        <div class="step" data-step="segment"><div class="step-dot">3</div><div class="step-label">Segment</div></div>
+        <div class="step-line"></div>
+        <div class="step" data-step="assess"><div class="step-dot">4</div><div class="step-label">Assess</div></div>
+        <div class="step-line"></div>
+        <div class="step" data-step="report"><div class="step-dot">5</div><div class="step-label">DPR Report</div></div>
+      </div>
+
+      <div class="grid">
+        <div class="card panel">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <h2>1. Rooftop Image &amp; Visual AI</h2>
+            <span class="badge" style="background:var(--sky-soft);color:var(--sky)">PHASE 1: PRE-INSTALLATION</span>
+          </div>
+          <div class="sub">Upload a photograph of your <b>bare terrace / flat roof</b>. The AI scans obstacle zones and simulates the post-installation green transformation.</div>
+          
+          <div class="upload" id="uploadZone">
+            <label class="upload-label" for="roofImage">Choose Rooftop Image</label>
+            <input id="roofImage" type="file" accept="image/*" capture="environment">
+            <div class="upload-hint">or drag &amp; drop JPG / PNG / WebP photograph here</div>
+            
+            <div class="canvas-container" id="canvasContainer">
+              <canvas id="roofCanvas"></canvas>
+              <div class="canvas-toolbar">
+                <button class="canvas-btn active" id="toggleMaskBtn" title="Toggle Obstacle Detection">🛡️ Before (Obstacles)</button>
+                <button class="canvas-btn" id="toggleGreenTransformBtn" title="Simulate Post-Installation Green Roof">🌿 After (AI Greening)</button>
+                <button class="canvas-btn" id="toggleThermalBtn" title="Toggle Thermal Heatmap">🌡️ Thermal View</button>
+              </div>
+              <div class="canvas-legend">
+                <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div><span id="canvasDeckLegend">Usable Deck: <b id="usablePctLabel">78%</b></span></div>
+                <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div><span>Obstacles: <b id="obstaclePctLabel">22%</b> (Water Tank/HVAC)</span></div>
+              </div>
+            </div>
+            <div id="imageMeta" style="margin-top:8px;font-size:11.5px;color:var(--muted)">No image uploaded yet.</div>
+            <div id="imageValidation" class="validation"></div>
+          </div>
+        </div>
+
+        <div class="card panel">
+          <h2>2. Environmental &amp; Location Intelligence</h2>
+          <div class="sub">Live weather calibration combined with roof dimensions and budget tier selection.</div>
+          
+          <div class="location-box">
+            <div class="loc-dot" id="locDot"></div>
+            <div>
+              <strong id="locationTitle" style="font-size:13px;display:block">Location Not Set</strong>
+              <span id="locationDetail" style="font-size:11.5px;color:var(--muted)">Choose current location or Indian demo city.</span>
+            </div>
+          </div>
+          
+          <div style="display:flex;gap:8px;margin-bottom:12px">
+            <button class="primary" id="locBtn" style="padding:9px 14px;font-size:12px">📍 Use GPS Location</button>
+            <button class="secondary" id="demoLocBtn" style="padding:9px 14px;font-size:12px">🇮🇳 Demo (Bengaluru)</button>
+          </div>
+          
+          <div id="miniMap" class="mini-map">
+            <div class="map-overlay-top">
+              <div class="map-coords" id="mapCoords">—</div>
+              <div class="map-btns">
+                <button type="button" class="map-btn" id="mapSatBtn" title="Toggle satellite view">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51z"/></svg>
+                </button>
+                <button type="button" class="map-btn" id="mapRecenterBtn" title="Recenter on rooftop">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+                </button>
+                <button type="button" class="map-btn" id="mapExpandBtn" title="Expand map">
+                  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 00-2 2v3M16 3h3a2 2 0 012 2v3M8 21H5a2 2 0 01-2-2v-3M16 21h3a2 2 0 002-2v-3"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="map-overlay-bottom">
+              <div class="map-badge"><span class="dot"></span>Rooftop location</div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div>
+              <label style="font-size:11px;font-weight:700;color:var(--muted)">Total Roof Footprint (sq ft)</label>
+              <input id="area" type="number" min="50" max="50000" value="650" placeholder="e.g. 650 sq ft">
+            </div>
+            <div>
+              <label style="font-size:11px;font-weight:700;color:var(--muted)">Green Area Coverage (%)</label>
+              <select id="coverageSelect">
+                <option value="50">50% (Starter Pilot Zone)</option>
+                <option value="75" selected>75% (Standard Extensive Deck)</option>
+                <option value="90">90% (Maximum Green Canopy)</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-top:10px">
+            <label style="font-size:11px;font-weight:700;color:var(--muted)">Cost &amp; Installation Tier</label>
+            <select id="costTierSelect">
+              <option value="diy">Modular DIY / Starter Trays (₹45–₹60 / sq ft)</option>
+              <option value="standard" selected>Standard Modular Extensive (₹60–₹78 / sq ft)</option>
+              <option value="turnkey">Commercial Turnkey with Drip Timer (₹78–₹95 / sq ft)</option>
+            </select>
+          </div>
+
+          <div style="margin-top:10px">
+            <label style="font-size:11px;font-weight:700;color:var(--muted)">Mobile Number (Required for Smart WhatsApp Rain Alerts)</label>
+            <input id="userPhoneAssessment" type="tel" placeholder="Enter 10-Digit Mobile No. (e.g. 9876543210)" style="width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--line);margin-top:3px;font-family:var(--font-mono)">
+          </div>
+
+          <div class="env">
+            <div class="metric"><small>Temperature</small><b id="temp">—</b></div>
+            <div class="metric"><small>Rainfall (7d)</small><b id="rain">—</b></div>
+            <div class="metric"><small>Climate</small><b id="climate">—</b></div>
+            <div class="metric"><small>Telemetry</small><b id="dataState">Waiting</b></div>
+          </div>
+
+          <button id="quickAnalyze" type="button">✨ Generate Full AI Assessment &amp; Feasibility</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Print report -->
+    <div class="dpr-header">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <h1 style="font-family:var(--font-display);font-size:26px;margin:0">SMART CITY GREEN ROOF FEASIBILITY REPORT (DPR)</h1>
+          <small style="font-family:var(--font-mono)">Prepared under National Mission on Sustainable Habitat &amp; Smart Cities Mission</small>
+        </div>
+        <div style="font-family:var(--font-mono);font-size:11px;text-align:right">
+          <div>Date: <span id="dprDate">2026-08-26</span></div>
+          <div>Standard: IS 875 &amp; NBC 2016 Compliant</div>
+        </div>
+      </div>
+    </div>
+
+    <footer style="margin-top:24px;text-align:center;color:var(--muted);font-size:11.5px">
+      Green Roof AI • Urban Sustainability &amp; Rooftop Intelligence Platform • Civil Engineering (IS 875) &amp; Municipal Policy Supported.
+    </footer>
+  </div>
+
+  <!-- Chat assistant -->
+  <button class="chat-fab" id="chatFab">🌱 Ask GreenAI</button>
+  <div class="chat-drawer" id="chatDrawer">
+    <div class="chat-head">
+      <div>
+        <h4 style="margin:0">🌱 GreenAI Advisory Consultant</h4>
+        <small style="font-size:10.5px;color:var(--canopy-soft);opacity:0.9">IS 875 &amp; Urban Horticulture Intelligence</small>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <button id="clearChatBtn" style="background:transparent;border:1px solid rgba(255,255,255,0.3);color:#fff;border-radius:6px;font-size:10px;padding:3px 7px;cursor:pointer">Clear</button>
+        <button id="closeChatBtn" style="background:transparent;border:none;color:#fff;font-size:18px;cursor:pointer;padding:0 4px">&times;</button>
+      </div>
+    </div>
+    <div class="chat-body" id="chatBody">
+      <div class="chat-bubble bot">Hello! I am <b>GreenAI</b>, your smart rooftop engineering &amp; botanical advisor. Ask me anything about lightweight soil mixes, plant species, IS 875 load safety, municipal tax rebates, biosolar setups, or zero-leak waterproofing!</div>
+    </div>
+    <div class="chat-chips" id="chatChipsContainer">
+      <div class="chat-chip" data-q="What is the realistic cost for a terrace green roof?">💰 Cost &amp; Budget</div>
+      <div class="chat-chip" data-q="What is the best lightweight soil mix for an RCC roof?">🧪 Lightweight Soil Mix</div>
+      <div class="chat-chip" data-q="Which plant species are best for hot Indian rooftops?">🌿 Best Plants (CAM Flora)</div>
+      <div class="chat-chip" data-q="Is my RCC roof slab safe under IS 875 dead load?">🏗️ IS 875 Structural Safety</div>
+      <div class="chat-chip" data-q="How does Biosolar boost solar PV efficiency?">☀️ Biosolar PV Synergy</div>
+      <div class="chat-chip" data-q="Which municipal tax rebates apply in India (BBMP/MCGM)?">🏛️ Municipal Tax Rebates</div>
+      <div class="chat-chip" data-q="How to prevent leakage and root damage?">🛡️ Zero-Leak Waterproofing</div>
+      <div class="chat-chip" data-q="How does smart IoT weather-hold irrigation work?">🚰 Smart IoT Irrigation</div>
+    </div>
+    <div class="chat-input-bar">
+      <input id="chatInput" type="text" placeholder="Ask GreenAI any question...">
+      <button id="sendChatBtn">Send</button>
+    </div>
+  </div>
+
+  <!-- WhatsApp helper -->
+  <div class="wa-modal" id="whatsappDirectModal" style="position:fixed;bottom:24px;left:24px;width:380px;max-width:calc(100vw - 32px);height:530px;background:#efeae2;border-radius:20px;box-shadow:0 24px 60px rgba(0,0,0,0.35);display:none;flex-direction:column;z-index:9999;overflow:hidden;border:1px solid #25D366;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;animation:rise .25s ease both">
+    <div style="background:#075E54;color:#fff;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 6px rgba(0,0,0,0.2)">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:36px;height:36px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:16px;box-shadow:0 2px 4px rgba(0,0,0,0.2)">G</div>
+        <div>
+          <div style="display:flex;align-items:center;gap:4px;font-weight:700;font-size:13.5px">
+            <span>Green Roof AI Official</span>
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="#25D366"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          </div>
+          <small style="font-size:10px;color:#dcfce7;display:block">online • Verified WhatsApp Cloud Daemon</small>
+        </div>
+      </div>
+      <div>
+        <button id="closeWaModalBtn" style="background:rgba(255,255,255,0.2);border:none;color:#fff;font-size:16px;cursor:pointer;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold">&times;</button>
+      </div>
+    </div>
+
+    <div id="waChatThread" style="flex:1;padding:12px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;background:color-mix(in srgb, #efeae2 90%, #25D366 10%);font-size:12px">
+      <div style="align-self:center;background:rgba(255,255,255,0.9);padding:3px 10px;border-radius:6px;font-size:10px;color:#555;font-weight:700;box-shadow:0 1px 2px rgba(0,0,0,0.1)">TODAY</div>
+      <div style="align-self:center;background:#ffeecd;padding:5px 12px;border-radius:8px;font-size:10px;color:#664d03;text-align:center;max-width:92%;box-shadow:0 1px 2px rgba(0,0,0,0.08);line-height:1.35">
+        🔒 Messages and calls are end-to-end encrypted. No one outside of this chat can read or listen to them.
+      </div>
+      <div style="align-self:flex-start;background:#fff;padding:10px 12px;border-radius:0 12px 12px 12px;max-width:90%;box-shadow:0 1px 3px rgba(0,0,0,0.12);position:relative">
+        <div style="font-weight:700;color:#075E54;margin-bottom:4px;font-size:11.5px">🌿 Green Roof AI — Smart Terrace Alert</div>
+        <div id="waMainBubbleText" style="line-height:1.45;color:#111;font-size:11.5px">
+          🎉 <b>Congratulations!</b> Your rooftop terrace has been successfully registered for <b>Automated Weather &amp; Rain Notifications</b>.<br><br>
+          📍 <b>Location:</b> <span id="waLocationSpan">Bengaluru, Karnataka</span><br>
+          🌡️ <b>Temperature:</b> <span id="waTempSpan">28.5 °C</span><br>
+          🌧️ <b>7-Day Rain Forecast:</b> <span id="waRainSpan">38mm</span><br>
+          🚰 <b>Smart Irrigation:</b> Weather-Hold Active (Drip valve held to save 160L water)<br>
+          ☀️ <b>Solar Gain Potential:</b> +10.5% (+457 kWh/yr)<br><br>
+          <i>We will automatically update you with live satellite weather reports! ✅</i>
+        </div>
+        <div style="margin-top:8px;padding-top:6px;border-top:1px solid #f0f0f0;display:flex;flex-wrap:wrap;gap:4px">
+          <a class="secondary" style="font-size:9.5px;padding:3px 6px;background:#f0fdf4;border:1px solid #86efac;color:#166534;border-radius:4px;cursor:pointer" href="results.html">📊 View Assessment DPR</a>
+          <a class="secondary" style="font-size:9.5px;padding:3px 6px;background:#f0fdf4;border:1px solid #86efac;color:#166534;border-radius:4px;cursor:pointer" href="iot.html">🚰 Check Solenoid Valve</a>
+          <button class="secondary" style="font-size:9.5px;padding:3px 6px;background:#f0fdf4;border:1px solid #86efac;color:#166534;border-radius:4px;cursor:pointer" onclick="$('chatDrawer').classList.add('open');$('whatsappDirectModal').style.display='none'">🌱 Ask GreenAI</button>
+        </div>
+        <div style="text-align:right;font-size:9px;color:#888;margin-top:4px">
+          <span id="waTimestamp">Just now</span> <span style="color:#34B7F1">✓✓</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#f0f0f0;padding:8px 10px;display:flex;align-items:center;gap:6px;border-top:1px solid #ddd">
+      <span style="font-size:16px;color:#555">😊</span>
+      <input id="waReplyInput" type="text" placeholder="Type a reply or question..." style="flex:1;padding:7px 12px;border:none;border-radius:20px;font-size:11.5px;background:#fff;outline:none">
+      <button id="sendWaReplyBtn" style="background:#075E54;color:#fff;border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px">➤</button>
+    </div>
+  </div>
+
+  <div class="toast-stack" id="toastStack" style="position:fixed;bottom:20px;left:20px;z-index:9999;display:flex;flex-direction:column;gap:8px"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/blazeface@0.0.7/dist/blazeface.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/chat.js"></script>
+  <script src="js/whatsapp.js"></script>
+  <script src="js/assessment.js"></script>
+</body>
+</html>

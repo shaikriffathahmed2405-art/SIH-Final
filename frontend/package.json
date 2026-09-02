@@ -1,0 +1,12 @@
+{
+  "name": "green-roof-ai-frontend",
+  "version": "2.2.0",
+  "private": true,
+  "description": "Standalone Frontend Web Client for Green Roof AI Platform",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  }
+}

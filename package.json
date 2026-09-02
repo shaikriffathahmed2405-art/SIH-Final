@@ -1,0 +1,16 @@
+{
+  "name": "green-roof-ai",
+  "version": "2.2.0",
+  "private": true,
+  "description": "Green Roof AI - Decoupled Frontend & Backend Architecture",
+  "type": "module",
+  "scripts": {
+    "start": "node start-dev.js",
+    "dev": "node start-dev.js",
+    "start:backend": "node backend/server.js",
+    "start:frontend": "node frontend/server.js",
+    "dev:backend": "node --watch backend/server.js",
+    "dev:frontend": "node --watch frontend/server.js",
+    "test": "node test.js"
+  }
+}
